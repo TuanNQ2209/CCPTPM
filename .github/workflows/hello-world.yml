@@ -2,18 +2,19 @@ name: Thử nghiệm đọc file README
 
 on:
   push:
-    branches: { "main"}
+    branches:
+      - main
 
-jobs: 
+jobs:
   thuc_hanh_doc_file:
     runs-on: ubuntu-latest
 
     steps:
       - name: Bước 1 - Xin chào
-      run: echo "Hello World"
-      
+        run: echo "Hello World"
+
       - name: Bước 2 - Tải code
-      uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Bước 3 - Đọc file
-      run: cat README.md
+        run: cat README.md
