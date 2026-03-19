@@ -1,0 +1,33 @@
+name: CI/CD Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main  # Chạy mỗi khi push code lên nhánh main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Robot lấy code từ Github về máy ảo
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Robot Đăng nhập vào Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 3. Robot Đóng gói (Build) và Đẩy (Push) Image
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # Thay 'tên_của_bạn' thành username Docker Hub của bạn
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/spring-boot-app:latest
+            ${{ secrets.DOCKER_USERNAME }}/spring-boot-app:${{ github.run_number }}
